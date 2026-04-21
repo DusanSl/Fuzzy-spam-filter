@@ -1,12 +1,20 @@
 import re
 
 SPAM_RECNIK = [
+    # Engleski
     "win", "winner", "won", "free", "click", "offer", "prize",
     "congratulations", "claim", "cash", "bonus", "reward",
     "urgent", "limited", "exclusive", "guarantee", "deal",
     "cheap", "discount", "buy now", "act now", "order now",
     "money", "income", "profit", "rich", "million", "dollar",
+    # Srpski
+    "pobedi", "pobednik", "osvojio", "besplatno", "klikni", "ponuda", "nagrada",
+    "čestitamo", "preuzmi", "gotovina", "bonus", "nagrada",
+    "hitno", "ograničeno", "ekskluzivno", "garantovano", "pogodba",
+    "jeftino", "popust", "kupi sad", "deluj odmah", "naruči odmah",
+    "novac", "prihod", "zarada", "bogat", "milion", "dolar",
 ]
+
 
 
 def analiziraj_email(tekst: str) -> dict:
