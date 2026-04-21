@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from obrada_teksta.analizator import analiziraj_email
+from obrada_teksta.analizator import analiziraj_email, ucitaj_random_primer
 from fazi.zakljucivanje import pokreni_fis
 
 app = Flask(
@@ -14,9 +14,14 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/primer")
+def primer():
+    tekst = ucitaj_random_primer()
+    return jsonify({"tekst": tekst})
+
+
 @app.route("/analiziraj", methods=["POST"])
 def analiziraj():
-
     if request.is_json:
         podaci = request.get_json()
         tekst_emaila = podaci.get("tekst", "")

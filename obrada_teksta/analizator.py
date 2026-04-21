@@ -1,13 +1,13 @@
 import re
 
 SPAM_RECNIK = [
-    # Engleski
+
     "win", "winner", "won", "free", "click", "offer", "prize",
     "congratulations", "claim", "cash", "bonus", "reward",
     "urgent", "limited", "exclusive", "guarantee", "deal",
     "cheap", "discount", "buy now", "act now", "order now",
     "money", "income", "profit", "rich", "million", "dollar",
-    # Srpski
+
     "pobedi", "pobednik", "osvojio", "besplatno", "klikni", "ponuda", "nagrada",
     "čestitamo", "preuzmi", "gotovina", "bonus", "nagrada",
     "hitno", "ograničeno", "ekskluzivno", "garantovano", "pogodba",
@@ -42,3 +42,12 @@ def analiziraj_email(tekst: str) -> dict:
         "broj_linkova":  float(broj_linkova),
         "caps_procenat": round(caps_procenat, 2),
     }
+
+
+def ucitaj_random_primer() -> str:
+
+    sadrzaj = PUTANJA_PRIMERI.read_text(encoding="utf-8")
+
+    primeri = [p.strip() for p in sadrzaj.split("---") if p.strip()]
+
+    return random.choice(primeri)
