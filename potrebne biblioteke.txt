@@ -1,3 +1,5 @@
 flask
 scikit-fuzzy
 numpy
+scipy
+packaging
