@@ -1,0 +1,20 @@
+# Virtuelno okruženje (Najbitnije!)
+.venv/
+venv/
+env/
+
+# Python privremeni fajlovi
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyCharm / IDE podešavanja
+.idea/
+.vscode/
+
+# Operativni sistem
+.DS_Store
+Thumbs.db
+
+# Logovi
+*.log
