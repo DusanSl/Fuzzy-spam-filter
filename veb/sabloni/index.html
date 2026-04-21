@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuzzy Spam Filter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-zaglavlje">
+            <div class="logo">🛡 SpamFIS</div>
+        </div>
+
+        <div class="sidebar-dugmad">
+            <button class="sb-dugme sb-dugme-primarno" onclick="novaProvera()">+ Nova provera</button>
+            <button class="sb-dugme sb-dugme-sekundarno" onclick="ucitajRandom()">🎲 Primer provera</button>
+        </div>
+
+        <div class="sidebar-sekcija-naslov">PRETHODNE PROVERE</div>
+        <div class="istorija" id="istorija">
+        </div>
+    </aside>
+
+    <main class="glavni">
+
+        <div class="email-panel">
+
+            <div class="email-kartica" id="email-kartica">
+                <div class="email-od">
+                    <span class="email-od-labela">Od:</span>
+                    <span class="email-od-vrednost">testiranje@spam-filter.ai</span>
+                </div>
+                <textarea
+                    id="tekst"
+                    placeholder="Napišite ili zalepite tekst emaila ovde..."
+                    oninput="resetujRezultate()"
+                ></textarea>
+            </div>
+
+            <div class="akcija-red">
+                <button class="dugme-analiziraj" onclick="pokreniAnalizu()">
+                    Pokreni Analizu
+                </button>
+            </div>
+
+            <div class="rezultati-grid" id="rezultati-grid">
+                <div class="rezultat-kartica rezultat-score" id="kartica-score">
+                    <div class="rezultat-broj" id="vrednost-score">—</div>
+                    <div class="rezultat-labela">SPAM SCORE</div>
+                    <div class="rezultat-indikator" id="indikator-score"></div>
+                </div>
+                <div class="rezultat-kartica" id="kartica-kljucne">
+                    <div class="rezultat-broj" id="vrednost-kljucne">—</div>
+                    <div class="rezultat-labela">KLJUČNE REČI</div>
+                </div>
+                <div class="rezultat-kartica" id="kartica-linkovi">
+                    <div class="rezultat-broj" id="vrednost-linkovi">—</div>
+                    <div class="rezultat-labela">BROJ LINKOVA</div>
+                </div>
+                <div class="rezultat-kartica" id="kartica-caps">
+                    <div class="rezultat-broj" id="vrednost-caps">—</div>
+                    <div class="rezultat-labela">CAPS</div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Čuva istoriju prethodnih analiza
+        const istorijaNiz = [];
+
+        // Učitava random primer iz /primer rute
+        async function ucitajRandom() {
+            const odgovor = await fetch('/primer');
+            const podaci  = await odgovor.json();
+            document.getElementById('tekst').value = podaci.tekst;
+            resetujRezultate();
+        }
+
+        // Resetuje prikaz rezultata na početno stanje
+        function resetujRezultate() {
+            ['score', 'kljucne', 'linkovi', 'caps'].forEach(id => {
+                document.getElementById('vrednost-' + id).textContent = '—';
+            });
+            const scoreKartica = document.getElementById('kartica-score');
+            scoreKartica.classList.remove('score-spam', 'score-sumnjivo', 'score-legitiman');
+            document.getElementById('indikator-score').textContent = '';
+        }
+
+        // Briše textarea i resetuje rezultate
+        function novaProvera() {
+            document.getElementById('tekst').value = '';
+            resetujRezultate();
+        }
+
+        // Šalje zahtev na /analiziraj i prikazuje rezultate
+        async function pokreniAnalizu() {
+            const tekst = document.getElementById('tekst').value.trim();
+            if (!tekst) return;
+
+            const dugme = document.querySelector('.dugme-analiziraj');
+            dugme.textContent = 'Analiziranje...';
+            dugme.disabled = true;
+
+            try {
+                const odgovor = await fetch('/analiziraj', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tekst })
+                });
+
+                const podaci = await odgovor.json();
+
+                // Prikazujemo rezultate
+                document.getElementById('vrednost-score').textContent    = podaci.spam_score + '%';
+                document.getElementById('vrednost-kljucne').textContent  = podaci.kljucne_reci;
+                document.getElementById('vrednost-linkovi').textContent  = podaci.broj_linkova;
+                document.getElementById('vrednost-caps').textContent     = podaci.caps_procenat + '%';
+
+                // Bojimo score karticu prema kategoriji
+                const scoreKartica = document.getElementById('kartica-score');
+                scoreKartica.classList.remove('score-spam', 'score-sumnjivo', 'score-legitiman');
+
+                const indikator = document.getElementById('indikator-score');
+                if (podaci.kategorija === 'SPAM') {
+                    scoreKartica.classList.add('score-spam');
+                    indikator.textContent = 'SPAM';
+                } else if (podaci.kategorija === 'SUMNJIVO') {
+                    scoreKartica.classList.add('score-sumnjivo');
+                    indikator.textContent = 'SUMNJIVO';
+                } else {
+                    scoreKartica.classList.add('score-legitiman');
+                    indikator.textContent = 'LEGITIMAN';
+                }
+
+                // Dodajemo u istoriju
+                dodajUIstorijу(tekst, podaci.spam_score, podaci.kategorija);
+
+            } catch (e) {
+                console.error('Greška:', e);
+            } finally {
+                dugme.textContent = 'Pokreni Analizu';
+                dugme.disabled = false;
+            }
+        }
+
+        // Dodaje stavku u sidebar istoriju
+        function dodajUIstorijу(tekst, score, kategorija) {
+            istorijaNiz.unshift({ tekst, score, kategorija });
+
+            const kontejner = document.getElementById('istorija');
+            kontejner.innerHTML = '';
+
+            istorijaNiz.forEach((stavka, i) => {
+                const el = document.createElement('div');
+                el.className = 'istorija-stavka';
+                el.onclick = () => {
+                    document.getElementById('tekst').value = stavka.tekst;
+                    resetujRezultate();
+                };
+
+                const boja = stavka.kategorija === 'SPAM' ? '#ef4444'
+                           : stavka.kategorija === 'SUMNJIVO' ? '#f59e0b'
+                           : '#10b981';
+
+                el.innerHTML = `
+                    <div class="ist-score" style="color:${boja}">${stavka.score}%</div>
+                    <div class="ist-tekst">${stavka.tekst.substring(0, 40)}...</div>
+                `;
+                kontejner.appendChild(el);
+            });
+        }
+    </script>
+
+</body>
+</html>
