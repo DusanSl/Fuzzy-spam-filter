@@ -72,10 +72,8 @@
     </main>
 
     <script>
-        // Čuva istoriju prethodnih analiza
         const istorijaNiz = [];
 
-        // Učitava random primer iz /primer rute
         async function ucitajRandom() {
             const odgovor = await fetch('/primer');
             const podaci  = await odgovor.json();
@@ -83,7 +81,6 @@
             resetujRezultate();
         }
 
-        // Resetuje prikaz rezultata na početno stanje
         function resetujRezultate() {
             ['score', 'kljucne', 'linkovi', 'caps'].forEach(id => {
                 document.getElementById('vrednost-' + id).textContent = '—';
@@ -93,13 +90,33 @@
             document.getElementById('indikator-score').textContent = '';
         }
 
-        // Briše textarea i resetuje rezultate
         function novaProvera() {
             document.getElementById('tekst').value = '';
             resetujRezultate();
         }
 
-        // Šalje zahtev na /analiziraj i prikazuje rezultate
+        function prikaziRezultate(podaci) {
+            document.getElementById('vrednost-score').textContent    = podaci.spam_score + '%';
+            document.getElementById('vrednost-kljucne').textContent  = podaci.kljucne_reci;
+            document.getElementById('vrednost-linkovi').textContent  = podaci.broj_linkova;
+            document.getElementById('vrednost-caps').textContent     = podaci.caps_procenat + '%';
+
+            const scoreKartica = document.getElementById('kartica-score');
+            scoreKartica.classList.remove('score-spam', 'score-sumnjivo', 'score-legitiman');
+
+            const indikator = document.getElementById('indikator-score');
+            if (podaci.kategorija === 'SPAM') {
+                scoreKartica.classList.add('score-spam');
+                indikator.textContent = 'SPAM';
+            } else if (podaci.kategorija === 'SUMNJIVO') {
+                scoreKartica.classList.add('score-sumnjivo');
+                indikator.textContent = 'SUMNJIVO';
+            } else {
+                scoreKartica.classList.add('score-legitiman');
+                indikator.textContent = 'LEGITIMAN';
+            }
+        }
+
         async function pokreniAnalizu() {
             const tekst = document.getElementById('tekst').value.trim();
             if (!tekst) return;
@@ -117,30 +134,9 @@
 
                 const podaci = await odgovor.json();
 
-                // Prikazujemo rezultate
-                document.getElementById('vrednost-score').textContent    = podaci.spam_score + '%';
-                document.getElementById('vrednost-kljucne').textContent  = podaci.kljucne_reci;
-                document.getElementById('vrednost-linkovi').textContent  = podaci.broj_linkova;
-                document.getElementById('vrednost-caps').textContent     = podaci.caps_procenat + '%';
+                prikaziRezultate(podaci);
 
-                // Bojimo score karticu prema kategoriji
-                const scoreKartica = document.getElementById('kartica-score');
-                scoreKartica.classList.remove('score-spam', 'score-sumnjivo', 'score-legitiman');
-
-                const indikator = document.getElementById('indikator-score');
-                if (podaci.kategorija === 'SPAM') {
-                    scoreKartica.classList.add('score-spam');
-                    indikator.textContent = 'SPAM';
-                } else if (podaci.kategorija === 'SUMNJIVO') {
-                    scoreKartica.classList.add('score-sumnjivo');
-                    indikator.textContent = 'SUMNJIVO';
-                } else {
-                    scoreKartica.classList.add('score-legitiman');
-                    indikator.textContent = 'LEGITIMAN';
-                }
-
-                // Dodajemo u istoriju
-                dodajUIstorijу(tekst, podaci.spam_score, podaci.kategorija);
+                dodajUIstoriju(tekst, podaci);
 
             } catch (e) {
                 console.error('Greška:', e);
@@ -150,27 +146,27 @@
             }
         }
 
-        // Dodaje stavku u sidebar istoriju
-        function dodajUIstorijу(tekst, score, kategorija) {
-            istorijaNiz.unshift({ tekst, score, kategorija });
+        function dodajUIstoriju(tekst, podaci) {
+            istorijaNiz.unshift({ tekst, podaci });
 
             const kontejner = document.getElementById('istorija');
             kontejner.innerHTML = '';
 
-            istorijaNiz.forEach((stavka, i) => {
+            istorijaNiz.forEach((stavka) => {
                 const el = document.createElement('div');
                 el.className = 'istorija-stavka';
+
                 el.onclick = () => {
                     document.getElementById('tekst').value = stavka.tekst;
-                    resetujRezultate();
+                    prikaziRezultate(stavka.podaci);
                 };
 
-                const boja = stavka.kategorija === 'SPAM' ? '#ef4444'
-                           : stavka.kategorija === 'SUMNJIVO' ? '#f59e0b'
+                const boja = stavka.podaci.kategorija === 'SPAM' ? '#ef4444'
+                           : stavka.podaci.kategorija === 'SUMNJIVO' ? '#f59e0b'
                            : '#10b981';
 
                 el.innerHTML = `
-                    <div class="ist-score" style="color:${boja}">${stavka.score}%</div>
+                    <div class="ist-score" style="color:${boja}">${stavka.podaci.spam_score}%</div>
                     <div class="ist-tekst">${stavka.tekst.substring(0, 40)}...</div>
                 `;
                 kontejner.appendChild(el);
