@@ -37,6 +37,7 @@ def analiziraj():
         ulazi["kljucne_reci"],
         ulazi["broj_linkova"],
         ulazi["caps_procenat"],
+        ulazi["interpunkcija"],
     )
 
     rezultat = {
@@ -44,6 +45,7 @@ def analiziraj():
         "kljucne_reci":  ulazi["kljucne_reci"],
         "broj_linkova":  ulazi["broj_linkova"],
         "caps_procenat": ulazi["caps_procenat"],
+        "interpunkcija": ulazi["interpunkcija"],
         "spam_score":    round(rezultat_fis["spam_score"], 2),
         "kategorija":    rezultat_fis["kategorija"],
     }

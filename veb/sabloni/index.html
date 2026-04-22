@@ -10,7 +10,7 @@
 
     <aside class="sidebar">
         <div class="sidebar-zaglavlje">
-            <div class="logo">Fuzzy Spam Filter</div>
+            <div class="logo">🛡 SpamFIS</div>
         </div>
 
         <div class="sidebar-dugmad">
@@ -63,6 +63,10 @@
                     <div class="rezultat-broj" id="vrednost-caps">—</div>
                     <div class="rezultat-labela">CAPS</div>
                 </div>
+                <div class="rezultat-kartica" id="kartica-interpunkcija">
+                    <div class="rezultat-broj" id="vrednost-interpunkcija">—</div>
+                    <div class="rezultat-labela">INTERPUNKCIJA</div>
+                </div>
             </div>
 
         </div>
@@ -80,7 +84,7 @@
         }
 
         function resetujRezultate() {
-            ['score', 'kljucne', 'linkovi', 'caps'].forEach(id => {
+            ['score', 'kljucne', 'linkovi', 'caps', 'interpunkcija'].forEach(id => {
                 document.getElementById('vrednost-' + id).textContent = '—';
             });
             const scoreKartica = document.getElementById('kartica-score');
@@ -94,10 +98,11 @@
         }
 
         function prikaziRezultate(podaci) {
-            document.getElementById('vrednost-score').textContent    = podaci.spam_score + '%';
-            document.getElementById('vrednost-kljucne').textContent  = podaci.kljucne_reci;
-            document.getElementById('vrednost-linkovi').textContent  = podaci.broj_linkova;
-            document.getElementById('vrednost-caps').textContent     = podaci.caps_procenat + '%';
+            document.getElementById('vrednost-score').textContent        = podaci.spam_score + '%';
+            document.getElementById('vrednost-kljucne').textContent      = podaci.kljucne_reci;
+            document.getElementById('vrednost-linkovi').textContent      = podaci.broj_linkova;
+            document.getElementById('vrednost-caps').textContent         = podaci.caps_procenat + '%';
+            document.getElementById('vrednost-interpunkcija').textContent = podaci.interpunkcija;
 
             const scoreKartica = document.getElementById('kartica-score');
             scoreKartica.classList.remove('score-spam', 'score-sumnjivo', 'score-legitiman');

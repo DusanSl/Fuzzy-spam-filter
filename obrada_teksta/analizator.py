@@ -24,26 +24,25 @@ SPAM_RECNIK_FRAZE = [
     "ograničena ponuda", "besplatna nagrada", "osvojio si", "preuzmi nagradu",
 ]
 
+MIN_SLOVA_ZA_CAPS = 15
+
 PUTANJA_PRIMERI = Path(__file__).parent.parent / "primeri.txt"
+
 
 def analiziraj_email(tekst: str) -> dict:
     tekst_mali = tekst.lower()
-    broj_kljucnih_reci = 0
 
+    broj_kljucnih_reci = 0
     for rec in SPAM_RECNIK_RECI:
         uzorak = r'\b' + re.escape(rec) + r'\b'
         broj_kljucnih_reci += len(re.findall(uzorak, tekst_mali))
-
     for fraza in SPAM_RECNIK_FRAZE:
         uzorak = re.escape(fraza)
         broj_kljucnih_reci += len(re.findall(uzorak, tekst_mali))
-
     broj_kljucnih_reci = min(broj_kljucnih_reci, 10)
 
     pronadjeni_linkovi = re.findall(r'https?://\S+', tekst)
     broj_linkova = min(len(pronadjeni_linkovi), 10)
-
-    MIN_SLOVA_ZA_CAPS = 15
 
     sva_slova = [karakter for karakter in tekst if karakter.isalpha()]
     if len(sva_slova) >= MIN_SLOVA_ZA_CAPS:
@@ -52,11 +51,17 @@ def analiziraj_email(tekst: str) -> dict:
     else:
         caps_procenat = 0.0
 
+    broj_uzvika   = tekst.count('!')
+    broj_upitnika = tekst.count('?')
+    interpunkcija = min(broj_uzvika + broj_upitnika, 20)
+
     return {
         "kljucne_reci":  float(broj_kljucnih_reci),
         "broj_linkova":  float(broj_linkova),
         "caps_procenat": round(caps_procenat, 2),
+        "interpunkcija": float(interpunkcija),
     }
+
 
 def ucitaj_random_primer() -> str:
 

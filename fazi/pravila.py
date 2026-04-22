@@ -3,11 +3,18 @@ from fazi.skupovi import (
     x_kljucne_reci,  kljucne_zanemarljive, kljucne_zastupljene, kljucne_dominantne,
     x_broj_linkova,  linkovi_minimalni,    linkovi_umereni,     linkovi_brojni,
     x_caps_procenat, caps_uobicajen,       caps_poviseni,       caps_agresivan,
+    x_interpunkcija, interpunkcija_retka,  interpunkcija_umerena, interpunkcija_agresivna,
     score_legitiman, score_sumnjiv,        score_spam,
     stepen_pripadnosti,
 )
 
-def fuzzifikuj(val_kljucne: float, val_linkovi: float, val_caps: float) -> dict:
+
+def fuzzifikuj(
+    val_kljucne:     float,
+    val_linkovi:     float,
+    val_caps:        float,
+    val_interpunkcija: float,
+) -> dict:
     return {
         "kljucne_reci": {
             "zanemarljive": stepen_pripadnosti(x_kljucne_reci, kljucne_zanemarljive, val_kljucne),
@@ -24,6 +31,11 @@ def fuzzifikuj(val_kljucne: float, val_linkovi: float, val_caps: float) -> dict:
             "poviseni":  stepen_pripadnosti(x_caps_procenat, caps_poviseni,  val_caps),
             "agresivan": stepen_pripadnosti(x_caps_procenat, caps_agresivan, val_caps),
         },
+        "interpunkcija": {
+            "retka":     stepen_pripadnosti(x_interpunkcija, interpunkcija_retka,     val_interpunkcija),
+            "umerena":   stepen_pripadnosti(x_interpunkcija, interpunkcija_umerena,   val_interpunkcija),
+            "agresivna": stepen_pripadnosti(x_interpunkcija, interpunkcija_agresivna, val_interpunkcija),
+        },
     }
 
 
@@ -31,6 +43,7 @@ def kontroler_spam_score(mu: dict) -> np.ndarray:
     kljucne = mu["kljucne_reci"]
     linkovi = mu["broj_linkova"]
     caps    = mu["caps_procenat"]
+    inter   = mu["interpunkcija"]
 
     aktivacije = []
 
@@ -74,6 +87,15 @@ def kontroler_spam_score(mu: dict) -> np.ndarray:
     aktivacije.append(np.fmin(p19, score_sumnjiv))
     p20 = min(kljucne["zanemarljive"], linkovi["brojni"])
     aktivacije.append(np.fmin(p20, score_sumnjiv))
-
+    p21 = inter["agresivna"]
+    aktivacije.append(np.fmin(p21, score_sumnjiv))
+    p22 = min(inter["agresivna"], kljucne["zastupljene"])
+    aktivacije.append(np.fmin(p22, score_spam))
+    p23 = min(inter["agresivna"], caps["agresivan"])
+    aktivacije.append(np.fmin(p23, score_spam))
+    p24 = min(inter["agresivna"], kljucne["dominantne"])
+    aktivacije.append(np.fmin(p24, score_spam))
+    p25 = min(inter["retka"], kljucne["zanemarljive"])
+    aktivacije.append(np.fmin(p25, score_legitiman))
 
     return np.fmax.reduce(aktivacije)
