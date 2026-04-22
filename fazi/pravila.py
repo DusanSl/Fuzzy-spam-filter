@@ -56,7 +56,7 @@ def kontroler_spam_score(mu: dict) -> np.ndarray:
     aktivacije.append(np.fmin(p10, score_sumnjiv))
     p11 = min(kljucne["zastupljene"], caps["poviseni"])
     aktivacije.append(np.fmin(p11, score_sumnjiv))
-    p12 = kljucne["zastupljene"] * 0.5
+    p12 = kljucne["zastupljene"]
     aktivacije.append(np.fmin(p12, score_sumnjiv))
     p13 = min(kljucne["dominantne"], caps["poviseni"])
     aktivacije.append(np.fmin(p13, score_spam))

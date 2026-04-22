@@ -38,10 +38,10 @@ def analiziraj_email(tekst: str) -> dict:
         uzorak = re.escape(fraza)
         broj_kljucnih_reci += len(re.findall(uzorak, tekst_mali))
 
-    broj_kljucnih_reci = min(broj_kljucnih_reci, 20)
+    broj_kljucnih_reci = min(broj_kljucnih_reci, 10)
 
     pronadjeni_linkovi = re.findall(r'https?://\S+', tekst)
-    broj_linkova = min(len(pronadjeni_linkovi), 20)
+    broj_linkova = min(len(pronadjeni_linkovi), 10)
 
     sva_slova = [karakter for karakter in tekst if karakter.isalpha()]
     if len(sva_slova) > 0:
