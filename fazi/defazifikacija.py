@@ -13,7 +13,6 @@ def defazifikuj(agregirani_skup: np.ndarray) -> float:
     return float(fuzz.defuzz(x_spam_score, agregirani_skup, "centroid"))
 
 def odredi_kategoriju(spam_score: float) -> str:
-
     pripadnost_legitiman = stepen_pripadnosti(x_spam_score, score_legitiman, spam_score)
     pripadnost_sumnjivo  = stepen_pripadnosti(x_spam_score, score_sumnjiv,   spam_score)
     pripadnost_spam      = stepen_pripadnosti(x_spam_score, score_spam,      spam_score)

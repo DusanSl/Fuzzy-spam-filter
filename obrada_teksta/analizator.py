@@ -1,29 +1,39 @@
 import re
 
-SPAM_RECNIK = [
-
+SPAM_RECNIK_RECI = [
     "win", "winner", "won", "free", "click", "offer", "prize",
     "congratulations", "claim", "cash", "bonus", "reward",
     "urgent", "limited", "exclusive", "guarantee", "deal",
-    "cheap", "discount", "buy now", "act now", "order now",
-    "money", "income", "profit", "rich", "million", "dollar",
+    "cheap", "discount", "income", "profit", "rich", "million", "dollar",
+    "money", "selected", "opportunity",
 
     "pobedi", "pobednik", "osvojio", "besplatno", "klikni", "ponuda", "nagrada",
-    "čestitamo", "preuzmi", "gotovina", "bonus", "nagrada",
-    "hitno", "ograničeno", "ekskluzivno", "garantovano", "pogodba",
-    "jeftino", "popust", "kupi sad", "deluj odmah", "naruči odmah",
-    "novac", "prihod", "zarada", "bogat", "milion", "dolar",
+    "čestitamo", "preuzmi", "gotovina", "hitno", "ograničeno",
+    "ekskluzivno", "garantovano", "pogodba", "jeftino", "popust",
+    "novac", "prihod", "zarada", "bogat", "milion", "dolar", "izabran", "prilika",
+]
+
+SPAM_RECNIK_FRAZE = [
+    "buy now", "act now", "order now", "click here", "limited time",
+    "limited offer", "free prize", "you won", "you have won",
+    "claim now", "claim your", "get rich", "make money",
+
+    "kupi sad", "deluj odmah", "naruči odmah", "klikni ovde",
+    "ograničena ponuda", "besplatna nagrada", "osvojio si", "preuzmi nagradu",
 ]
 
 
-
 def analiziraj_email(tekst: str) -> dict:
-
     tekst_mali = tekst.lower()
-
     broj_kljucnih_reci = 0
-    for rec in SPAM_RECNIK:
-        broj_kljucnih_reci += len(re.findall(r'\b' + re.escape(rec) + r'\b', tekst_mali))
+
+    for rec in SPAM_RECNIK_RECI:
+        uzorak = r'\b' + re.escape(rec) + r'\b'
+        broj_kljucnih_reci += len(re.findall(uzorak, tekst_mali))
+
+    for fraza in SPAM_RECNIK_FRAZE:
+        uzorak = re.escape(fraza)
+        broj_kljucnih_reci += len(re.findall(uzorak, tekst_mali))
 
     broj_kljucnih_reci = min(broj_kljucnih_reci, 20)
 
@@ -42,7 +52,6 @@ def analiziraj_email(tekst: str) -> dict:
         "broj_linkova":  float(broj_linkova),
         "caps_procenat": round(caps_procenat, 2),
     }
-
 
 def ucitaj_random_primer() -> str:
 

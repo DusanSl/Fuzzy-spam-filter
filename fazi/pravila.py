@@ -7,7 +7,6 @@ from fazi.skupovi import (
     stepen_pripadnosti,
 )
 
-
 def fuzzifikuj(val_kljucne: float, val_linkovi: float, val_caps: float) -> dict:
     return {
         "kljucne_reci": {
@@ -29,7 +28,6 @@ def fuzzifikuj(val_kljucne: float, val_linkovi: float, val_caps: float) -> dict:
 
 
 def kontroler_spam_score(mu: dict) -> np.ndarray:
-
     kljucne = mu["kljucne_reci"]
     linkovi = mu["broj_linkova"]
     caps    = mu["caps_procenat"]
@@ -38,29 +36,31 @@ def kontroler_spam_score(mu: dict) -> np.ndarray:
 
     p01 = min(kljucne["dominantne"], linkovi["brojni"])
     aktivacije.append(np.fmin(p01, score_spam))
-
     p02 = min(kljucne["zanemarljive"], caps["uobicajen"])
     aktivacije.append(np.fmin(p02, score_legitiman))
-
     p03 = min(kljucne["zastupljene"], caps["agresivan"])
-    aktivacije.append(np.fmin(p03, score_sumnjiv))
-
+    aktivacije.append(np.fmin(p03, score_spam))
     p04 = min(linkovi["brojni"], caps["agresivan"])
     aktivacije.append(np.fmin(p04, score_spam))
-
     p05 = min(kljucne["zanemarljive"], linkovi["minimalni"])
     aktivacije.append(np.fmin(p05, score_legitiman))
-
     p06 = max(kljucne["dominantne"], caps["agresivan"])
     aktivacije.append(np.fmin(p06, score_spam))
-
     p07 = min(kljucne["zastupljene"], linkovi["umereni"])
     aktivacije.append(np.fmin(p07, score_sumnjiv))
-
     p08 = min(linkovi["minimalni"], caps["poviseni"])
-    aktivacije.append(np.fmin(p08, score_legitiman))
-
+    aktivacije.append(np.fmin(p08, score_sumnjiv))
     p09 = min(kljucne["dominantne"], linkovi["minimalni"])
     aktivacije.append(np.fmin(p09, score_sumnjiv))
+    p10 = min(kljucne["zastupljene"], linkovi["minimalni"])
+    aktivacije.append(np.fmin(p10, score_sumnjiv))
+    p11 = min(kljucne["zastupljene"], caps["poviseni"])
+    aktivacije.append(np.fmin(p11, score_sumnjiv))
+    p12 = kljucne["zastupljene"] * 0.5
+    aktivacije.append(np.fmin(p12, score_sumnjiv))
+    p13 = min(kljucne["dominantne"], caps["poviseni"])
+    aktivacije.append(np.fmin(p13, score_spam))
+    p14 = min(kljucne["zanemarljive"], caps["poviseni"])
+    aktivacije.append(np.fmin(p14, score_legitiman))
 
     return np.fmax.reduce(aktivacije)
