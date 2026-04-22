@@ -53,7 +53,7 @@ def analiziraj_email(tekst: str) -> dict:
 
     broj_uzvika   = tekst.count('!')
     broj_upitnika = tekst.count('?')
-    interpunkcija = min(broj_uzvika + broj_upitnika, 20)
+    interpunkcija = min(broj_uzvika + broj_upitnika, 15)
 
     return {
         "kljucne_reci":  float(broj_kljucnih_reci),
