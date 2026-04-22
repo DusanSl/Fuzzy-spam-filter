@@ -1,4 +1,6 @@
 import re
+import random
+from pathlib import Path
 
 SPAM_RECNIK_RECI = [
     "win", "winner", "won", "free", "click", "offer", "prize",
@@ -22,6 +24,7 @@ SPAM_RECNIK_FRAZE = [
     "ograničena ponuda", "besplatna nagrada", "osvojio si", "preuzmi nagradu",
 ]
 
+PUTANJA_PRIMERI = Path(__file__).parent.parent / "primeri.txt"
 
 def analiziraj_email(tekst: str) -> dict:
     tekst_mali = tekst.lower()
@@ -55,8 +58,16 @@ def analiziraj_email(tekst: str) -> dict:
 
 def ucitaj_random_primer() -> str:
 
-    sadrzaj = PUTANJA_PRIMERI.read_text(encoding="utf-8")
+    if not PUTANJA_PRIMERI.exists():
+        return f"Greška: Fajl nije pronađen na lokaciji {PUTANJA_PRIMERI}"
 
-    primeri = [p.strip() for p in sadrzaj.split("---") if p.strip()]
+    try:
+        sadrzaj = PUTANJA_PRIMERI.read_text(encoding="utf-8")
+        primeri = [p.strip() for p in sadrzaj.split("---") if p.strip()]
 
-    return random.choice(primeri)
+        if not primeri:
+            return "Fajl je prazan ili nema separatora ---"
+
+        return random.choice(primeri)
+    except Exception as e:
+        return f"Greška pri čitanju fajla: {str(e)}"
