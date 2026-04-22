@@ -1,21 +1,14 @@
-:root {
-    --pozadina:       #f0f2f5;
-    --sidebar-bg:     #1a1f2e;
-    --sidebar-tekst:  #e2e8f0;
-    --sidebar-slabo:  #64748b;
-    --bela:           #ffffff;
-    --ivica:          #e2e8f0;
-    --tekst:          #1a1f2e;
-    --tekst-slabo:    #94a3b8;
-    --akcenat:        #10b981;
-    --spam:           #ef4444;
-    --sumnjivo:       #f59e0b;
-    --legitiman:      #10b981;
-    --font:           'DM Sans', sans-serif;
-    --font-mono:      'DM Mono', monospace;
-    --radijus:        12px;
-    --senka:          0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('fonts/MonaSansVF[wght,opsz].woff2') format('woff2');
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
 }
+
+.ist-spam      { color: #ef4444; }
+.ist-sumnjivo  { color: #f59e0b; }
+.ist-legitiman { color: #10b981; }
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -24,9 +17,9 @@
 }
 
 body {
-    font-family: var(--font);
-    background-color: var(--pozadina);
-    color: var(--tekst);
+    font-family: 'Mona Sans', sans-serif;
+    background-color: #f0f2f5;
+    color: #1a1f2e;
     display: flex;
     height: 100vh;
     overflow: hidden;
@@ -35,7 +28,7 @@ body {
 .sidebar {
     width: 260px;
     min-width: 260px;
-    background-color: var(--sidebar-bg);
+    background-color: #1a1f2e;
     display: flex;
     flex-direction: column;
     padding: 1.5rem 1rem;
@@ -44,10 +37,10 @@ body {
 }
 
 .logo {
-    font-family: var(--font);
+    font-family: 'Mona Sans', sans-serif;
     font-weight: 700;
     font-size: 1.1rem;
-    color: var(--sidebar-tekst);
+    color: #e2e8f0;
     letter-spacing: -0.02em;
     padding: 0 0.25rem;
 }
@@ -62,7 +55,7 @@ body {
     width: 100%;
     padding: 0.6rem 1rem;
     border-radius: 8px;
-    font-family: var(--font);
+    font-family: 'Mona Sans', sans-serif;
     font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
@@ -73,7 +66,7 @@ body {
 
 .sb-dugme-primarno {
     background-color: #2d3448;
-    color: var(--sidebar-tekst);
+    color: #e2e8f0;
 }
 
 .sb-dugme-primarno:hover {
@@ -87,14 +80,14 @@ body {
 
 .sb-dugme-sekundarno:hover {
     background-color: #2d3448;
-    color: var(--sidebar-tekst);
+    color: #e2e8f0;
 }
 
 .sidebar-sekcija-naslov {
-    font-family: var(--font-mono);
+    font-family: 'Mona Sans', sans-serif;
     font-size: 0.62rem;
     letter-spacing: 0.12em;
-    color: var(--sidebar-slabo);
+    color: #64748b;
     padding: 0 0.25rem;
 }
 
@@ -116,7 +109,7 @@ body {
 }
 
 .ist-score {
-    font-family: var(--font-mono);
+    font-family: 'Mona Sans', sans-serif;
     font-size: 0.75rem;
     font-weight: 500;
     margin-bottom: 0.15rem;
@@ -148,16 +141,16 @@ body {
 }
 
 .email-kartica {
-    background: var(--bela);
-    border: 1px solid var(--ivica);
-    border-radius: var(--radijus);
-    box-shadow: var(--senka);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
     overflow: hidden;
 }
 
 .email-od {
     padding: 0.85rem 1.25rem;
-    border-bottom: 1px solid var(--ivica);
+    border-bottom: 1px solid #e2e8f0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -166,23 +159,23 @@ body {
 .email-od-labela {
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--tekst-slabo);
+    color: #94a3b8;
 }
 
 .email-od-vrednost {
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--tekst);
+    color: #1a1f2e;
 }
 
 textarea {
     width: 100%;
     min-height: 220px;
     padding: 1.25rem;
-    font-family: var(--font);
+    font-family: 'Mona Sans', sans-serif;
     font-size: 0.9rem;
     line-height: 1.7;
-    color: var(--tekst);
+    color: #1a1f2e;
     border: none;
     outline: none;
     resize: vertical;
@@ -190,7 +183,7 @@ textarea {
 }
 
 textarea::placeholder {
-    color: var(--tekst-slabo);
+    color: #94a3b8;
 }
 
 .akcija-red {
@@ -200,9 +193,9 @@ textarea::placeholder {
 
 .dugme-analiziraj {
     padding: 0.7rem 1.75rem;
-    background-color: var(--akcenat);
+    background-color: #10b981;
     color: white;
-    font-family: var(--font);
+    font-family: 'Mona Sans', sans-serif;
     font-size: 0.9rem;
     font-weight: 600;
     border: none;
@@ -224,15 +217,15 @@ textarea::placeholder {
 
 .rezultati-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 1rem;
 }
 
 .rezultat-kartica {
-    background: var(--bela);
-    border: 1px solid var(--ivica);
-    border-radius: var(--radijus);
-    box-shadow: var(--senka);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
     padding: 1.25rem 1rem;
     display: flex;
     flex-direction: column;
@@ -244,7 +237,7 @@ textarea::placeholder {
 }
 
 .rezultat-broj {
-    font-family: var(--font-mono);
+    font-family: 'Mona Sans', sans-serif;
     font-size: 1.9rem;
     font-weight: 500;
     color: #3b82f6;
@@ -252,10 +245,10 @@ textarea::placeholder {
 }
 
 .rezultat-labela {
-    font-family: var(--font-mono);
+    font-family: 'Mona Sans', sans-serif;
     font-size: 0.62rem;
     letter-spacing: 0.1em;
-    color: var(--tekst-slabo);
+    color: #000000;
     text-align: center;
 }
 
@@ -264,28 +257,28 @@ textarea::placeholder {
 }
 
 .score-spam {
-    border-color: var(--spam);
+    border-color: #ef4444;
 }
 .score-spam .rezultat-broj {
-    color: var(--spam);
+    color: #ef4444;
 }
 
 .score-sumnjivo {
-    border-color: var(--sumnjivo);
+    border-color: #f59e0b;
 }
 .score-sumnjivo .rezultat-broj {
-    color: var(--sumnjivo);
+    color: #f59e0b;
 }
 
 .score-legitiman {
-    border-color: var(--legitiman);
+    border-color: #10b981;
 }
 .score-legitiman .rezultat-broj {
-    color: var(--legitiman);
+    color: #10b981;
 }
 
 .rezultat-indikator {
-    font-family: var(--font-mono);
+    font-family: 'Mona Sans', sans-serif;
     font-size: 0.6rem;
     letter-spacing: 0.12em;
     font-weight: 500;

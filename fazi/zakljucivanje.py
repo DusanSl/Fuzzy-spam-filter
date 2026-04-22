@@ -10,13 +10,14 @@ from fazi.defazifikacija import (
 
 
 def pokreni_fis(
-    val_kljucne: float,
-    val_linkovi: float,
-    val_caps:    float,
-    ispisi:      bool = False,
+    val_kljucne:      float,
+    val_linkovi:      float,
+    val_caps:         float,
+    val_interpunkcija: float,
+    ispisi:           bool = False,
 ) -> dict:
 
-    mu = fuzzifikuj(val_kljucne, val_linkovi, val_caps)
+    mu = fuzzifikuj(val_kljucne, val_linkovi, val_caps, val_interpunkcija)
 
     agregirani_skup = kontroler_spam_score(mu)
 
@@ -25,11 +26,12 @@ def pokreni_fis(
     kategorija = odredi_kategoriju(spam_score)
 
     if ispisi:
-        print(f"  Ključne reči : {val_kljucne}")
-        print(f"  Broj linkova : {val_linkovi}")
-        print(f"  Caps procenat: {val_caps}%")
-        print(f"  Spam score   : {spam_score:.2f}")
-        print(f"  Kategorija   : {kategorija}")
+        print(f"  Ključne reči  : {val_kljucne}")
+        print(f"  Broj linkova  : {val_linkovi}")
+        print(f"  Caps procenat : {val_caps}%")
+        print(f"  Interpunkcija : {val_interpunkcija}")
+        print(f"  Spam score    : {spam_score:.2f}")
+        print(f"  Kategorija    : {kategorija}")
 
     return {
         "spam_score": spam_score,
