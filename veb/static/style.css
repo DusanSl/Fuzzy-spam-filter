@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'Mona Sans';
+    src: url('fonts/MonaSansVF[wght,opsz].woff2') format('woff2');
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --pozadina:       #f0f2f5;
     --sidebar-bg:     #1a1f2e;
@@ -7,15 +15,20 @@
     --ivica:          #e2e8f0;
     --tekst:          #1a1f2e;
     --tekst-slabo:    #94a3b8;
+    --tekst-crn:      #000000;
     --akcenat:        #10b981;
     --spam:           #ef4444;
     --sumnjivo:       #f59e0b;
     --legitiman:      #10b981;
-    --font:           'DM Sans', sans-serif;
-    --font-mono:      'DM Mono', monospace;
+    --font:           'Mona Sans', sans-serif;
+    --font-mono:      'Mona Sans', sans-serif;
     --radijus:        12px;
     --senka:          0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
 }
+
+.ist-spam      { color: var(--spam); }
+.ist-sumnjivo  { color: var(--sumnjivo); }
+.ist-legitiman { color: var(--legitiman); }
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -255,7 +268,7 @@ textarea::placeholder {
     font-family: var(--font-mono);
     font-size: 0.62rem;
     letter-spacing: 0.1em;
-    color: var(--tekst-slabo);
+    color: var(--tekst-crn);
     text-align: center;
 }
 
