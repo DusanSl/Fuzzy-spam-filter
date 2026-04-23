@@ -53,7 +53,8 @@ def analiziraj_email(tekst: str) -> dict:
 
     broj_uzvika = tekst.count('!')
     broj_upitnika = tekst.count('?')
-    ukupno_karaktera = len(tekst.replace(' ', ''))
+    tekst_bez_linkova = re.sub(r'https?://\S+', '', tekst)
+    ukupno_karaktera = len(tekst_bez_linkova.replace(' ', ''))
     if ukupno_karaktera > 0:
         interpunkcija = round(((broj_uzvika + broj_upitnika) / ukupno_karaktera) * 100, 2)
     else:
