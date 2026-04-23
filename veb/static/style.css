@@ -6,9 +6,9 @@
     font-display: swap;
 }
 
-.ist-spam      { color: #ef4444; }
-.ist-sumnjivo  { color: #f59e0b; }
-.ist-legitiman { color: #10b981; }
+.je-spam      { color: #ef4444; }
+.je-sumnjivo  { color: #f59e0b; }
+.je-legitiman { color: #10b981; }
 
 *, *::before, *::after {
     box-sizing: border-box;

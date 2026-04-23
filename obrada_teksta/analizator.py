@@ -9,10 +9,30 @@ SPAM_RECNIK_RECI = [
     "cheap", "discount", "income", "profit", "rich", "million", "dollar",
     "money", "selected", "opportunity",
 
-    "pobedi", "pobednik", "osvojio", "besplatno", "klikni", "ponuda", "nagrada",
-    "čestitamo", "preuzmi", "gotovina", "hitno", "ograničeno",
-    "ekskluzivno", "garantovano", "pogodba", "jeftino", "popust",
-    "novac", "prihod", "zarada", "bogat", "milion", "dolar", "izabran", "prilika",
+    "pobedi", "pobednik", "pobedniku", "pobednika",
+    "osvojio", "osvojili", "osvojite", "osvoji",
+    "besplatno", "besplatnu", "besplatni", "besplatna", "besplatne",
+    "klikni", "kliknite", "kliknete",
+    "ponuda", "ponude", "ponudu",
+    "nagrada", "nagradu", "nagrade", "nagradi",
+    "čestitamo", "čestitamo", "čestitamo",
+    "preuzmi", "preuzmite", "preuzmete", "preuzimite",
+    "gotovina", "gotovinu", "gotovine",
+    "hitno", "hitna", "hitni", "hitne",
+    "ograničeno", "ograničena", "ograničenu", "ograničene", "ograničeni",
+    "ekskluzivno", "ekskluzivna", "ekskluzivnu", "ekskluzivne", "ekskluzivni",
+    "garantovano", "garantovana", "garantujemo", "garantovanu",
+    "jeftino", "jeftina", "jeftine", "jeftini", "jeftinu",
+    "popust", "popusta", "popustu", "popustom",
+    "novac", "novca", "novcem", "novcu",
+    "prihod", "prihoda", "prihode", "prihodom",
+    "zarada", "zaradu", "zarade", "zaradite", "zaraditi",
+    "bogat", "bogata", "bogati", "bogatstvo",
+    "milion", "miliona", "milione", "milionima",
+    "dolar", "dolara", "dolare", "dolarima",
+    "izabran", "izabrana", "izabrani", "izabrano", "izabrane",
+    "prilika", "prilike", "priliku", "prilikama",
+    "pogodba", "pogodbe", "pogodbu",
 ]
 
 SPAM_RECNIK_FRAZE = [
@@ -51,9 +71,14 @@ def analiziraj_email(tekst: str) -> dict:
     else:
         caps_procenat = 0.0
 
-    broj_uzvika   = tekst.count('!')
+    broj_uzvika = tekst.count('!')
     broj_upitnika = tekst.count('?')
-    interpunkcija = min(broj_uzvika + broj_upitnika, 15)
+    tekst_bez_linkova = re.sub(r'https?://\S+', '', tekst)
+    ukupno_karaktera = len(tekst_bez_linkova.replace(' ', ''))
+    if ukupno_karaktera > 0:
+        interpunkcija = round(((broj_uzvika + broj_upitnika) / ukupno_karaktera) * 100, 2)
+    else:
+        interpunkcija = 0.0
 
     return {
         "kljucne_reci":  float(broj_kljucnih_reci),

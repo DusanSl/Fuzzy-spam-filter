@@ -15,8 +15,8 @@
         </div>
 
         <div class="sidebar-dugmad">
-            <button class="sb-dugme sb-dugme-primarno" onclick="novaProvera()"> Nova provera</button>
-            <button class="sb-dugme sb-dugme-sekundarno" onclick="ucitajRandom()"> Primer provera</button>
+            <button class="sb-dugme sb-dugme-primarno" onclick="novaProvera()">Nova provera</button>
+            <button class="sb-dugme sb-dugme-sekundarno" onclick="ucitajRandom()">Primer provera</button>
         </div>
 
         <div class="sidebar-sekcija-naslov">PRETHODNE PROVERE</div>
@@ -103,7 +103,7 @@
             document.getElementById('vrednost-kljucne').textContent      = podaci.kljucne_reci;
             document.getElementById('vrednost-linkovi').textContent      = podaci.broj_linkova;
             document.getElementById('vrednost-caps').textContent         = podaci.caps_procenat + '%';
-            document.getElementById('vrednost-interpunkcija').textContent = podaci.interpunkcija;
+            document.getElementById('vrednost-interpunkcija').textContent = podaci.interpunkcija + '%';
 
             const scoreKartica = document.getElementById('kartica-score');
             scoreKartica.classList.remove('score-spam', 'score-sumnjivo', 'score-legitiman');
@@ -165,9 +165,9 @@
                     prikaziRezultate(stavka.podaci);
                 };
 
-                const klasaBoje = stavka.podaci.kategorija === 'SPAM' ? 'ist-spam'
-                                : stavka.podaci.kategorija === 'SUMNJIVO' ? 'ist-sumnjivo'
-                                : 'ist-legitiman';
+                const klasaBoje = stavka.podaci.kategorija === 'SPAM' ? 'je-spam'
+                                : stavka.podaci.kategorija === 'SUMNJIVO' ? 'je-sumnjivo'
+                                : 'je-legitiman';
 
                 el.innerHTML = `
                     <div class="ist-score ${klasaBoje}">${stavka.podaci.spam_score}%</div>
