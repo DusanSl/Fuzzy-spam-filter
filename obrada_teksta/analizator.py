@@ -51,9 +51,13 @@ def analiziraj_email(tekst: str) -> dict:
     else:
         caps_procenat = 0.0
 
-    broj_uzvika   = tekst.count('!')
+    broj_uzvika = tekst.count('!')
     broj_upitnika = tekst.count('?')
-    interpunkcija = min(broj_uzvika + broj_upitnika, 15)
+    ukupno_karaktera = len(tekst.replace(' ', ''))
+    if ukupno_karaktera > 0:
+        interpunkcija = round(((broj_uzvika + broj_upitnika) / ukupno_karaktera) * 100, 2)
+    else:
+        interpunkcija = 0.0
 
     return {
         "kljucne_reci":  float(broj_kljucnih_reci),
