@@ -25,7 +25,7 @@ Izlaz `spam_score` (0–100%) se klasifikuje u jednu od tri kategorije: **LEGITI
 
 - **Python** — fazi logika (`scikit-fuzzy`, `numpy`, `scipy`)
 - **Flask** — web server i REST rute
-- **HTML + CSS** — korisnički interfejs sa tamnom temom
+- **HTML + CSS** — korisnički interfejs
 
 ---
 
