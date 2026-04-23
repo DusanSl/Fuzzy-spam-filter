@@ -50,7 +50,7 @@ def kontroler_spam_score(mu: dict) -> np.ndarray:
     p01 = min(kljucne["zanemarljive"], linkovi["minimalni"], caps["uobicajen"], inter["retka"])
     aktivacije.append(np.fmin(p01, score_legitiman))
 
-    p02 = np.fmax(kljucne["zastupljene"],np.fmax(linkovi["umereni"],np.fmax(caps["poviseni"], inter["umerena"])))
+    p02 = min(kljucne["zastupljene"], linkovi["umereni"], caps["poviseni"], inter["umerena"])
     aktivacije.append(np.fmin(p02, score_sumnjiv))
 
     p03 = np.fmax(kljucne["dominantne"], linkovi["brojni"])
@@ -61,5 +61,11 @@ def kontroler_spam_score(mu: dict) -> np.ndarray:
 
     p05 = min(linkovi["umereni"], np.fmax(caps["agresivan"], inter["agresivna"]))
     aktivacije.append(np.fmin(p05, score_spam))
+
+    p06 = kljucne["dominantne"]
+    aktivacije.append(np.fmin(p06, score_spam))
+
+    p07 = min(kljucne["zastupljene"], linkovi["minimalni"])
+    aktivacije.append(np.fmin(p07, score_sumnjiv))
 
     return np.fmax.reduce(aktivacije)

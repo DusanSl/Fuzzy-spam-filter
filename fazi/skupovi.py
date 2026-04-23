@@ -23,9 +23,9 @@ interpunkcija_retka     = fuzz.trapmf(x_interpunkcija, [0,  0,  2,  5])
 interpunkcija_umerena   = fuzz.trimf (x_interpunkcija, [3, 10, 20])
 interpunkcija_agresivna = fuzz.trapmf(x_interpunkcija, [15, 25, 100, 100])
 
-score_legitiman = fuzz.trapmf(x_spam_score, [0, 0, 10, 25])
-score_sumnjiv   = fuzz.trimf (x_spam_score, [15, 35, 55])
-score_spam      = fuzz.trapmf(x_spam_score, [45, 65, 100, 100])
+score_legitiman = fuzz.trapmf(x_spam_score, [0,  0,  10, 25])
+score_sumnjiv   = fuzz.trimf (x_spam_score, [20, 40, 65])
+score_spam      = fuzz.trapmf(x_spam_score, [55, 75, 100, 100])
 
 
 def stepen_pripadnosti(x_universe, mf, vrednost: float) -> float:
