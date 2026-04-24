@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from obrada_teksta.analizator import analiziraj_email, ucitaj_random_primer
 from fazi.zakljucivanje import pokreni_fis
+import os
 
 app = Flask(
     __name__,
@@ -57,4 +58,5 @@ def analiziraj():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host="0.0.0.0", port=port)
