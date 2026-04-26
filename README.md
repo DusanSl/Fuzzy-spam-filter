@@ -61,7 +61,7 @@ spam_filter/
 
 ```bash
 # Kloniranje repozitorijuma
-git clone <url>
+git clone https://github.com/DusanSl/Fuzzy-spam-filter.git
 cd spam_filter
 
 # Instalacija zavisnosti
