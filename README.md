@@ -20,11 +20,11 @@ The application features a responsive web interface with full bilingual support 
 
 ## Screenshots
 
-**Legitimate email - low suspicion score:**
+**Legitimate email, low suspicion score:**
 
 ![Legitimate email example](screenshots/Legit-example.webp)
 
-**Spam email - high suspicion score, flagged across all signals:**
+**Spam email, high suspicion score, flagged across all signals:**
 
 ![Spam email example](screenshots/Spam-example.png)
 
@@ -32,17 +32,17 @@ The application features a responsive web interface with full bilingual support 
 
 ## How It Works
 
-Traditional spam filters use rigid rules (e.g., "if email contains *FREE* -> spam"). The fuzzy approach maps features to **degrees of membership** in fuzzy sets, combines them using rules through Mamdani inference, and defuzzifies the result using the **centroid method** to produce a final score.
+Traditional spam filters use rigid rules (e.g., "if email contains *FREE*, mark as spam"). The fuzzy approach maps features to **degrees of membership** in fuzzy sets, combines them using rules through Mamdani inference, and defuzzifies the result using the **centroid method** to produce a final score.
 
 ### Input Variables (0-10 or 0-100%)
 The system extracts and analyzes four input features from the email text:
 
 | Input | Description | Range |
 |---|---|---|
-| `kljucne_reci` (Keywords) | Count of identified spam keywords/phrases | 0–10 |
-| `broj_linkova` (Links) | Total URL links found in the body | 0–10 |
-| `caps_procenat` (Caps % ) | Percentage of uppercase letters in the text | 0–100% |
-| `interpunkcija` (Punctuation) | Density of exclamation marks and question marks | 0–100% |
+| `kljucne_reci` (Keywords) | Count of identified spam keywords/phrases | 0-10 |
+| `broj_linkova` (Links) | Total URL links found in the body | 0-10 |
+| `caps_procenat` (Caps %) | Percentage of uppercase letters in the text | 0-100% |
+| `interpunkcija` (Punctuation) | Density of exclamation marks and question marks | 0-100% |
 
 The output `spam_score` (0-100%) is classified into one of three linguistic terms based on the highest membership degree: **LEGITIMATE** (LEGITIMAN), **SUSPICIOUS** (SUMNJIVO), or **SPAM** (SPAM).
 
@@ -89,33 +89,33 @@ Fuzzy-Guard/
 
 The boundaries for membership functions are configured in `fazi/skupovi.py`:
 
-* **Keywords** `[0–10]`
-  - `zanemarljive` (Negligible) — `trapmf [0, 0, 1, 3]`
-  - `zastupljene` (Present) — `trimf [1, 4, 7]`
-  - `dominantne` (Dominant) — `trapmf [5, 7, 10, 10]`
+* **Keywords** `[0-10]`
+  - `zanemarljive` (Negligible): `trapmf [0, 0, 1, 3]`
+  - `zastupljene` (Present): `trimf [1, 4, 7]`
+  - `dominantne` (Dominant): `trapmf [5, 7, 10, 10]`
 
-* **Link Count** `[0–10]`
-  - `minimalni` (Minimal) — `trapmf [0, 0, 0, 1]`
-  - `umereni` (Moderate) — `trimf [0, 1, 3]`
-  - `brojni` (Numerous) — `trapmf [2, 4, 10, 10]`
+* **Link Count** `[0-10]`
+  - `minimalni` (Minimal): `trapmf [0, 0, 0, 1]`
+  - `umereni` (Moderate): `trimf [0, 1, 3]`
+  - `brojni` (Numerous): `trapmf [2, 4, 10, 10]`
 
-* **Caps Percentage** `[0–100%]`
-  - `uobicajen` (Normal) — `trapmf [0, 0, 1, 10]`
-  - `poviseni` (Elevated) — `trimf [7, 18, 35]`
-  - `blago_povisen` (Mildly Elevated) — `trimf [10, 35, 65]`
-  - `agresivan` (Aggressive) — `trapmf [60, 85, 100, 100]`
+* **Caps Percentage** `[0-100%]`
+  - `uobicajen` (Normal): `trapmf [0, 0, 1, 10]`
+  - `poviseni` (Elevated): `trimf [7, 18, 35]`
+  - `blago_povisen` (Mildly Elevated): `trimf [10, 35, 65]`
+  - `agresivan` (Aggressive): `trapmf [60, 85, 100, 100]`
 
-* **Punctuation** `[0–100%]`
-  - `retka` (Sparse) — `trapmf [0, 0, 2, 5]`
-  - `blago` (Mild) — `trimf [2, 6, 10]`
-  - `umerena` (Moderate) — `trimf [8, 15, 25]`
-  - `agresivna` (Aggressive) — `trapmf [15, 25, 100, 100]`
+* **Punctuation** `[0-100%]`
+  - `retka` (Sparse): `trapmf [0, 0, 2, 5]`
+  - `blago` (Mild): `trimf [2, 6, 10]`
+  - `umerena` (Moderate): `trimf [8, 15, 25]`
+  - `agresivna` (Aggressive): `trapmf [15, 25, 100, 100]`
 
-* **Spam Score (Output)** `[0–100]`
-  - `score_legitiman` (Legitimate) — `trapmf [0, 0, 8, 20]`
-  - `score_legitiman_energicno` (Energetically Legitimate) — `trimf [10, 15, 20]`
-  - `score_sumnjiv` (Suspicious) — `trimf [20, 40, 65]`
-  - `score_spam` (Spam) — `trapmf [55, 75, 100, 100]`
+* **Spam Score (Output)** `[0-100]`
+  - `score_legitiman` (Legitimate): `trapmf [0, 0, 8, 20]`
+  - `score_legitiman_energicno` (Energetically Legitimate): `trimf [10, 15, 20]`
+  - `score_sumnjiv` (Suspicious): `trimf [20, 40, 65]`
+  - `score_spam` (Spam): `trapmf [55, 75, 100, 100]`
 
 ---
 
@@ -145,29 +145,29 @@ The rules mapping fuzzy inputs to decisions are set up in `fazi/pravila.py`:
 ## Installation & Running Locally
 
 1. **Clone the repository:**
-   ```bash
+```bash
    git clone https://github.com/DusanSl/Fuzzy-Guard
    cd Fuzzy-Guard
-   ```
+```
 
 2. **Set up a virtual environment (optional but recommended):**
-   ```bash
+```bash
    python -m venv .venv
    # On Windows:
    .venv\Scripts\activate
    # On macOS/Linux:
    source .venv/bin/activate
-   ```
+```
 
 3. **Install dependencies:**
-   ```bash
+```bash
    pip install -r requirements.txt
-   ```
+```
 
 4. **Run the Flask application:**
-   ```bash
+```bash
    python main.py
-   ```
+```
    The application will run locally at `http://127.0.0.1:5000`.
 
 ---
@@ -221,11 +221,11 @@ Full license: [LICENSE](LICENSE.txt) | [CC BY-NC-SA 4.0](https://creativecommons
 
 **What this means:**
 
-- **Share** - You can view and fork this repository
-- **Adapt** - You can modify the code for educational purposes
-- **Attribution** - You must give appropriate credit and link to this repository
-- **NonCommercial** - You may not use this work for commercial purposes without permission
-- **ShareAlike** - Modified versions must use the same license
+- **Share:** You can view and fork this repository
+- **Adapt:** You can modify the code for educational purposes
+- **Attribution:** You must give appropriate credit and link to this repository
+- **NonCommercial:** You may not use this work for commercial purposes without permission
+- **ShareAlike:** Modified versions must use the same license
 
 **Copyright © 2026 Dušan Slankamenac**
 
